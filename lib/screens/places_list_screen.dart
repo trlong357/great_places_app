@@ -25,34 +25,36 @@ class PlacesListScreen extends StatelessWidget {
       body: FutureBuilder(
         future: Provider.of<GreatPlaces>(context, listen: false)
             .fetchAndSetPlaces(),
-        builder: (context, snapshot) =>
-            snapshot.connectionState == ConnectionState.waiting
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Consumer<GreatPlaces>(
-                    builder: (context, greatPlaces, ch) {
-                      return greatPlaces.items.isEmpty
-                          ? ch!
-                          : ListView.builder(
-                              itemCount: greatPlaces.items.length,
-                              itemBuilder: (context, index) => ListTile(
-                                leading: CircleAvatar(
-                                  backgroundImage: FileImage(
-                                    greatPlaces.items[index].image,
-                                  ),
-                                ),
-                                title: Text(greatPlaces.items[index].title),
-                                onTap: () {
-                                  //....
-                                },
+        builder: (context, snapshot) => snapshot.connectionState ==
+                ConnectionState.waiting
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Consumer<GreatPlaces>(
+                builder: (context, greatPlaces, ch) {
+                  return greatPlaces.items.isEmpty
+                      ? ch!
+                      : ListView.builder(
+                          itemCount: greatPlaces.items.length,
+                          itemBuilder: (context, index) => ListTile(
+                            leading: CircleAvatar(
+                              backgroundImage: FileImage(
+                                greatPlaces.items[index].image,
                               ),
-                            );
-                    },
-                    child: const Center(
-                      child: Text('No places yet, adding some!'),
-                    ),
-                  ),
+                            ),
+                            title: Text(greatPlaces.items[index].title),
+                            subtitle: Text(
+                                greatPlaces.items[index].location!.address!),
+                            onTap: () {
+                              //....
+                            },
+                          ),
+                        );
+                },
+                child: const Center(
+                  child: Text('No places yet, adding some!'),
+                ),
+              ),
       ),
     );
   }
